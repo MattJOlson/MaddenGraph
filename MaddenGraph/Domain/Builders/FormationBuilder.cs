@@ -18,7 +18,9 @@ namespace MaddenGraph.Domain.Builders
             _receivers = parent._receivers + 1;
             if (ofs < 0) {
                 _weak = parent._weak + 1;
+                _strong = parent._strong;
             } else {
+                _weak = parent._weak;
                 _strong = parent._strong + 1;
             }
         }
@@ -27,6 +29,14 @@ namespace MaddenGraph.Domain.Builders
         public FormationBuilder(FormationBuilder parent)
         {
             _receivers = parent._receivers;
+            _weak = parent._weak;
+            _strong = parent._strong;
+        }
+
+        // callback ctor: builders for backfield receivers
+        public FormationBuilder(FormationBuilder parent, int x, int y)
+        {
+            _receivers = parent._receivers + 1;
             _weak = parent._weak;
             _strong = parent._strong;
         }
