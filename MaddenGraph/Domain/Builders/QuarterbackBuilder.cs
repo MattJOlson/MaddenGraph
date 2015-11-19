@@ -13,5 +13,10 @@ namespace MaddenGraph.Domain.Builders
         {
             return new FormationBuilder(_parent);
         }
+
+        public FormationBuilder Shotgun()
+        {
+            return new FormationBuilder(_parent);
+        }
     }
 }

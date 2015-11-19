@@ -20,6 +20,18 @@ namespace MaddenGraph.Tests.Unit.Domain
                 .BuildFormation();
         }
 
+        private Formation BuildEmptyQuadsStrong()
+        {
+            return new FormationBuilder()
+                .WithReceiver().At(-14).On()
+                .WithReceiver().At(6).On()
+                .WithReceiver().At(8).Off()
+                .WithReceiver().At(10).Off()
+                .WithReceiver().At(14).Off()
+                .WithQuarterback().Shotgun()
+                .BuildFormation();
+        }
+
         [Test]
         public void formations_are_created_with_eleven_player_positions()
         {
@@ -45,7 +57,7 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void formation_construction_allows_quads_formations_too()
         {
-            var formation = new Formation(1,4);
+            var formation = BuildEmptyQuadsStrong();
 
             formation.WeakSideReceivers.Count.Should().Be(1);
             formation.StrongSideReceivers.Count.Should().Be(4);
@@ -55,7 +67,7 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void all_eligible_receivers_in_a_formation_really_are_eligible()
         {
-            var formation = new Formation(2,2);
+            var formation = BuildDoubles();
 
             foreach (var p in formation.EligibleReceivers) {
                 p.IsEligible.Should().BeTrue();
