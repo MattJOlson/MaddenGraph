@@ -67,8 +67,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Domain\Builders\BackfieldBuilder.cs" />
+    <Compile Include="Domain\Builders\QuarterbackBuilder.cs" />
     <Compile Include="Domain\Formation.cs" />
+    <Compile Include="Domain\Builders\FormationBuilder.cs" />
     <Compile Include="Domain\Position.cs" />
+    <Compile Include="Domain\Builders\ReceiverBuilder.cs" />
     <Compile Include="Util\Pt.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

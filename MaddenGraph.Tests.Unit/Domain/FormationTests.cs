@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MaddenGraph.Domain;
+using MaddenGraph.Domain.Builders;
 using NUnit.Framework;
 
 namespace MaddenGraph.Tests.Unit.Domain
@@ -10,7 +11,14 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void formations_are_created_with_eleven_player_positions()
         {
-            var formation = new Formation(2, 2);
+            var formation = new FormationBuilder()
+                .WithReceiver().At(-14).On()
+                .WithReceiver().At(-10).Off()
+                .WithReceiver().At(6).On()
+                .WithReceiver().At(12).Off()
+                .WithQuarterback().UnderCenter()
+                .WithBack().At(-7, 0)
+                .BuildFormation();
 
             formation.Positions.Count.Should().Be(11);
         }
