@@ -14,10 +14,20 @@ namespace MaddenGraph.Domain
 
             Func<int, Position> makeEligible = i => Position.Eligible(Pt.O, i);
             Func<int, Position> makeIneligible = i => Position.Ineligible(Pt.O);
+            Func<Position, Position> moveOffLine = p => Position.Eligible(Pt.At(0, -1), p.Tag);
 
-            StrongSideReceivers = Enumerable.Range(0, strong).Select(makeEligible).ToList();
-            WeakSideReceivers = Enumerable.Range(strong, weak).Select(makeEligible).ToList();
-            BackfieldReceivers = Enumerable.Range(strong + weak, backfield).Select(makeEligible).ToList();
+            StrongSideReceivers = Enumerable.Range(0, strong)
+                .Select(makeEligible)
+                .Select(p => p.Tag == 0 ? p : moveOffLine(p))
+                .ToList();
+            WeakSideReceivers = Enumerable.Range(strong, weak)
+                .Select(makeEligible)
+                .Select(p => p.Tag == strong ? p : moveOffLine(p))
+                .ToList();
+            BackfieldReceivers = Enumerable.Range(strong + weak, backfield)
+                .Select(makeEligible)
+                .Select(moveOffLine)
+                .ToList();
             EveryoneElse = Enumerable.Range(5, 6).Select(makeIneligible).ToList();
         }
 

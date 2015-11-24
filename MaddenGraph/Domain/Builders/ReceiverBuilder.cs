@@ -1,16 +1,18 @@
+using MaddenGraph.Util;
+
 namespace MaddenGraph.Domain.Builders
 {
     public class ReceiverBuilder
     {
         private FormationBuilder _parent;
-        private int? _ofs = null;
+        private Pt _ofs;
 
         public ReceiverBuilder(FormationBuilder parent)
         {
             _parent = parent;
         }
 
-        public ReceiverBuilder(FormationBuilder parent, int ofs)
+        public ReceiverBuilder(FormationBuilder parent, Pt ofs)
         {
             _parent = parent;
             _ofs = ofs;
@@ -18,7 +20,7 @@ namespace MaddenGraph.Domain.Builders
 
         public ReceiverBuilder At(int ofs)
         {
-            return new ReceiverBuilder(_parent, ofs);
+            return new ReceiverBuilder(_parent, Pt.At(ofs, 0));
         }
 
         public FormationBuilder On()
@@ -28,7 +30,7 @@ namespace MaddenGraph.Domain.Builders
 
         public FormationBuilder Off()
         {
-            return new FormationBuilder(_parent, _ofs);
+            return new FormationBuilder(_parent, Pt.At(_ofs.X, -1));
         }
     }
 }

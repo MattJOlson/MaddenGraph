@@ -1,4 +1,5 @@
 using System;
+using MaddenGraph.Util;
 
 namespace MaddenGraph.Domain.Builders
 {
@@ -11,12 +12,10 @@ namespace MaddenGraph.Domain.Builders
         public FormationBuilder() { }
 
         // callback ctor: builders for eligible receivers at the line
-        public FormationBuilder(FormationBuilder parent, int? ofs)
+        public FormationBuilder(FormationBuilder parent, Pt ofs)
         {
-            if(ofs == null) throw new ArgumentNullException("Didn't initialize receiver");
-
             _receivers = parent._receivers + 1;
-            if (ofs < 0) {
+            if (ofs.X < 0) {
                 _weak = parent._weak + 1;
                 _strong = parent._strong;
             } else {

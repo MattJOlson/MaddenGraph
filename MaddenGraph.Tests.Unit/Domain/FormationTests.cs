@@ -73,5 +73,13 @@ namespace MaddenGraph.Tests.Unit.Domain
                 p.IsEligible.Should().BeTrue();
             }
         }
+
+        [Test]
+        public void exactly_two_eligible_receivers_should_be_on_the_line()
+        {
+            var formation = BuildDoubles();
+
+            formation.EligibleReceivers.FindAll(r => r.IsOnLine).Count.Should().Be(2);
+        }
     }
 }
