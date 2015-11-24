@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\FormationTests.cs" />
+    <Compile Include="Domain\PositionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\PtTests.cs" />
   </ItemGroup>
