@@ -1,4 +1,5 @@
-﻿using MaddenGraph.Util;
+﻿using System;
+using MaddenGraph.Util;
 
 namespace MaddenGraph.Domain
 {
@@ -12,6 +13,9 @@ namespace MaddenGraph.Domain
 
         public static Position Eligible(Pt pos, int tag) // TODO: Is tag really an int?
         {
+            if (tag < 0 || 4 < tag) {
+                throw new ArgumentException($"Eligible receiver must have a tag between 0 and 4, found {tag}");
+            }
             return new Position(pos, tag); 
         }
 

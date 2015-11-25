@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 using FluentAssertions;
 using MaddenGraph.Domain;
 using MaddenGraph.Util;
@@ -21,6 +21,25 @@ namespace MaddenGraph.Tests.Unit.Domain
         {
             var pos = Position.Eligible(Pt.At(0, -1), 0);
             pos.IsOnLine.Should().BeFalse();
+        }
+
+        [TestCase(-1, "Eligible receiver must have a tag between 0 and 4, found -1")]
+        [TestCase(0, null)]
+        [TestCase(1, null)]
+        [TestCase(2, null)]
+        [TestCase(3, null)]
+        [TestCase(4, null)]
+        [TestCase(5, "Eligible receiver must have a tag between 0 and 4, found 5")] // XXX: Precludes six-receiver tackle-eligible plays
+        public void eligible_receivers_must_have_tag_between_0_and_4(int tag, string msg)
+        {
+            Action ctor = () => Position.Eligible(Pt.O, tag);
+
+            if (msg == null) {
+                ctor.ShouldNotThrow();
+            } else {
+                ctor.ShouldThrow<ArgumentException>()
+                    .WithMessage(msg);
+            }
         }
     }
 }
