@@ -11,7 +11,7 @@ namespace MaddenGraph.Domain.Builders
 
         public FormationBuilder At(int x, int y)
         {
-            return new FormationBuilder(_parent, x, y);
+            return _parent.WithBackAt(x, y);
         }
     }
 }

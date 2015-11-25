@@ -35,6 +35,18 @@ namespace MaddenGraph.Tests.Unit.Domain
                 .WithMessage("Formation must have a quarterback");
         }
 
+        [Test]
+        [Ignore("Not ready yet")]
+        public void formation_builder_objects_when_eligible_receiver_is_covered()
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithReceiver().At(-14).On()
+                .WithReceiver().At(-12).On();
+
+            ctor.ShouldThrow<FormationBuilderException>()
+                .WithMessage("Receiver at -12 covered by receiver at -14");
+        }
+
         private FormationBuilder BuilderWithReceivers(int r)
         {
             var builder = new FormationBuilder();

@@ -25,12 +25,12 @@ namespace MaddenGraph.Domain.Builders
 
         public FormationBuilder On()
         {
-            return new FormationBuilder(_parent, _ofs);
+            return _parent.WithReceiverAt(Pt.At(_ofs.X, 0));
         }
 
         public FormationBuilder Off()
         {
-            return new FormationBuilder(_parent, Pt.At(_ofs.X, -1));
+            return _parent.WithReceiverAt(Pt.At(_ofs.X, -1));
         }
     }
 }
