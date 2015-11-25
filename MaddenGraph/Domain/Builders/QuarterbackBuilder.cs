@@ -11,12 +11,12 @@ namespace MaddenGraph.Domain.Builders
 
         public FormationBuilder UnderCenter()
         {
-            return new FormationBuilder(_parent);
+            return new FormationBuilder(_parent, FormationBuilder.QbPos.UnderCenter);
         }
 
         public FormationBuilder Shotgun()
         {
-            return new FormationBuilder(_parent);
+            return new FormationBuilder(_parent, FormationBuilder.QbPos.Shotgun);
         }
     }
 }
