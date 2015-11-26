@@ -8,23 +8,17 @@ namespace MaddenGraph.Domain
 {
     public class Formation
     {
-        public Formation(int weak, int strong)
+        public Formation(List<Pt> weak, List<Pt> strong)
         {
-            var backfield = 5 - (strong + weak);
+            var backfield = 5 - (strong.Count + weak.Count);
 
             Func<int, Position> makeEligible = i => Position.Eligible(Pt.O, i);
             Func<int, Position> makeIneligible = i => Position.Ineligible(Pt.O);
             Func<Position, Position> moveOffLine = p => Position.Eligible(Pt.At(0, -1), p.Tag);
 
-            StrongSideReceivers = Enumerable.Range(0, strong)
-                .Select(makeEligible)
-                .Select(p => p.Tag == 0 ? p : moveOffLine(p))
-                .ToList();
-            WeakSideReceivers = Enumerable.Range(strong, weak)
-                .Select(makeEligible)
-                .Select(p => p.Tag == strong ? p : moveOffLine(p))
-                .ToList();
-            BackfieldReceivers = Enumerable.Range(strong + weak, backfield)
+            StrongSideReceivers = strong.Select((pt, i) => Position.Eligible(pt, i)).ToList();
+            WeakSideReceivers = weak.Select((pt, i) => Position.Eligible(pt, i)).ToList();
+            BackfieldReceivers = Enumerable.Range(strong.Count + weak.Count, backfield)
                 .Select(makeEligible)
                 .Select(moveOffLine)
                 .ToList();
