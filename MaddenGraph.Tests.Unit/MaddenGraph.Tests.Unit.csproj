@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\FormationAssertions.cs" />
     <Compile Include="Domain\FormationBuilderTests.cs" />
+    <Compile Include="Domain\Formations.cs" />
     <Compile Include="Domain\FormationTests.cs" />
     <Compile Include="Domain\PositionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

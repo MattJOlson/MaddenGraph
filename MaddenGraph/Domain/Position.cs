@@ -28,5 +28,10 @@ namespace MaddenGraph.Domain
         public int Tag { get; }
         public bool IsEligible => 0 <= Tag;
         public bool IsOnLine => Pos.Y == 0;
+
+        public bool IsUnderCenter()
+        {
+            return Pos.Y == -1;
+        }
     }
 }

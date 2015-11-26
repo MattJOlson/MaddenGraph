@@ -68,6 +68,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Domain\Builders\BackfieldBuilder.cs" />
+    <Compile Include="Domain\Builders\FormationBuilderException.cs" />
+    <Compile Include="Domain\Builders\FormationBuilderExtensions.cs" />
     <Compile Include="Domain\Builders\QuarterbackBuilder.cs" />
     <Compile Include="Domain\Formation.cs" />
     <Compile Include="Domain\Builders\FormationBuilder.cs" />

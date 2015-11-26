@@ -8,46 +8,22 @@ namespace MaddenGraph.Tests.Unit.Domain
     [TestFixture]
     class FormationTests
     {
-        private Formation BuildDoubles()
-        {
-            return new FormationBuilder()
-                .WithReceiver().At(-14).On()
-                .WithReceiver().At(-10).Off()
-                .WithReceiver().At(6).On()
-                .WithReceiver().At(12).Off()
-                .WithQuarterback().UnderCenter()
-                .WithBack().At(-7, 0)
-                .BuildFormation();
-        }
-
-        private Formation BuildEmptyQuadsStrong()
-        {
-            return new FormationBuilder()
-                .WithReceiver().At(-14).On()
-                .WithReceiver().At(6).On()
-                .WithReceiver().At(8).Off()
-                .WithReceiver().At(10).Off()
-                .WithReceiver().At(14).Off()
-                .WithQuarterback().Shotgun()
-                .BuildFormation();
-        }
-
         [Test]
         public void formations_are_created_with_eleven_player_positions()
         {
-            BuildDoubles().Positions.Count.Should().Be(11);
+            Formations.Doubles().Positions.Count.Should().Be(11);
         }
 
         [Test]
         public void default_formations_are_created_with_five_eligible_receivers()
         {
-            BuildDoubles().EligibleReceivers.Count.Should().Be(5);
+            Formations.Doubles().EligibleReceivers.Count.Should().Be(5);
         }
 
         [Test]
         public void formation_construction_respects_per_side_receiver_params()
         {
-            var formation = BuildDoubles();
+            var formation = Formations.Doubles();
 
             formation.WeakSideReceivers.Count.Should().Be(2);
             formation.StrongSideReceivers.Count.Should().Be(2);
@@ -57,7 +33,7 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void formation_construction_allows_quads_formations_too()
         {
-            var formation = BuildEmptyQuadsStrong();
+            var formation = Formations.GunEmptyQuadsStrong();
 
             formation.WeakSideReceivers.Count.Should().Be(1);
             formation.StrongSideReceivers.Count.Should().Be(4);
@@ -67,7 +43,7 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void all_eligible_receivers_in_a_formation_really_are_eligible()
         {
-            var formation = BuildDoubles();
+            var formation = Formations.Doubles();
 
             foreach (var p in formation.EligibleReceivers) {
                 p.IsEligible.Should().BeTrue();
@@ -77,7 +53,7 @@ namespace MaddenGraph.Tests.Unit.Domain
         [Test]
         public void exactly_two_eligible_receivers_should_be_on_the_line()
         {
-            var formation = BuildDoubles();
+            var formation = Formations.Doubles();
 
             formation.EligibleReceivers.FindAll(r => r.IsOnLine).Count.Should().Be(2);
         }

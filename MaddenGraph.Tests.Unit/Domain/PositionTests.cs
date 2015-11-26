@@ -41,5 +41,13 @@ namespace MaddenGraph.Tests.Unit.Domain
                     .WithMessage(msg);
             }
         }
+
+        [TestCase(-1, true)]
+        [TestCase(-5, false)]
+        public void position_under_center_should_only_be_one_yard_deep(int depth, bool expected)
+        {
+            var pos = Position.Ineligible(Pt.At(0, depth));
+            pos.IsUnderCenter().Should().Be(expected);
+        }
     }
 }
