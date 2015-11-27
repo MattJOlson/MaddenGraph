@@ -52,6 +52,34 @@ namespace MaddenGraph.Tests.Unit.Domain
             }
         }
 
+        // NB: This ASSumes that players are 1yd in diameter and are spaced at 1yd intervals
+        // This also indirectly and kind of obscurely specifies the default position of the offensive line
+        [TestCase(-6, false)]
+        [TestCase(-4, true)]
+        [TestCase(-2, true)]
+        [TestCase(0, true)]
+        [TestCase(2, true)]
+        [TestCase(4, true)]
+        [TestCase(6, false)]
+        public void formation_builder_objects_when_a_receiver_sits_on_a_lineman(int offset, bool expectException)
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithReceiver().At(offset).On();
+
+            if (expectException) {
+                ctor.ShouldThrow<FormationBuilderException>()
+                    .WithMessage($"Specified player at ({offset},0) intersects another player");
+            } else {
+                ctor.ShouldNotThrow();
+            }
+        }
+
+        // TODO:
+        // * Receivers in tackle box ("not the same thing!")
+        // * Receivers sitting on each other
+        // * Backs sitting on each other, QB incl.
+        // * Backs out of tackle box
+
         private FormationBuilder BuilderWithReceivers(int r)
         {
             var builder = new FormationBuilder();

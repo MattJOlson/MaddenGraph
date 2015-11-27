@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaddenGraph.Util;
@@ -10,10 +11,19 @@ namespace MaddenGraph.Domain.Builders
         private List<Pt> _weak = new List<Pt>();
         private List<Pt> _strong = new List<Pt>();
         private QbPos _qbPos = QbPos.Unspecified;
+        private List<Pt> _players;
 
         public enum QbPos { Unspecified, UnderCenter, Shotgun }
 
         private int Players => 5 + _receivers + (_qbPos == QbPos.Unspecified ? 0 : 1);
+
+        public FormationBuilder()
+        {
+            _players = Enumerable.Range(-2, 5)
+                                 .Select(x => x * 2) // offset along line
+                                 .Select(x => Pt.At(x, 0))
+                                 .ToList();
+        }
 
         public ReceiverBuilder WithReceiver()
         {
@@ -47,6 +57,9 @@ namespace MaddenGraph.Domain.Builders
             var clone = Clone();
             clone._receivers++;
 
+            if(PlayerIsAlreadyOn(pos))
+                throw new FormationBuilderException($"Specified player at {pos} intersects another player");
+
             if (pos.X < 0) {
                 clone._weak.AddIfLegal(pos);
             } else {
@@ -54,6 +67,11 @@ namespace MaddenGraph.Domain.Builders
             }
 
             return clone;
+        }
+
+        private bool PlayerIsAlreadyOn(Pt pos)
+        {
+            return _players.FindAll(p => p == pos).Count != 0;
         }
 
         public FormationBuilder WithQb(QbPos position)
