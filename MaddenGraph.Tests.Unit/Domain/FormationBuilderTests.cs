@@ -74,9 +74,19 @@ namespace MaddenGraph.Tests.Unit.Domain
             }
         }
 
+        [Test]
+        public void formation_builder_objects_when_two_receivers_intersect()
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithReceiver().At(-10).Off()
+                .WithReceiver().At(-10).Off();
+
+            ctor.ShouldThrow<FormationBuilderException>()
+                .WithMessage($"Specified player at (-10,-1) intersects another player");
+        }
+
         // TODO:
         // * Receivers in tackle box ("not the same thing!")
-        // * Receivers sitting on each other
         // * Backs sitting on each other, QB incl.
         // * Backs out of tackle box
 
@@ -84,8 +94,8 @@ namespace MaddenGraph.Tests.Unit.Domain
         {
             var builder = new FormationBuilder();
             foreach (var i in Enumerable.Range(0, r)) {
-                var rbdr = builder.WithReceiver().At(r - 14);
-                builder = r == 0 ? rbdr.On() : rbdr.Off();
+                var rbdr = builder.WithReceiver().At(i - 14);
+                builder = i == 0 ? rbdr.On() : rbdr.Off();
             }
             return builder;
         }

@@ -11,18 +11,19 @@ namespace MaddenGraph.Domain.Builders
         private List<Pt> _weak = new List<Pt>();
         private List<Pt> _strong = new List<Pt>();
         private QbPos _qbPos = QbPos.Unspecified;
-        private List<Pt> _players;
+        private List<Pt> _line;
 
         public enum QbPos { Unspecified, UnderCenter, Shotgun }
 
         private int Players => 5 + _receivers + (_qbPos == QbPos.Unspecified ? 0 : 1);
+        private List<Pt> _players => _line.Concat(_weak).Concat(_strong).ToList(); // FIXME: missing QB
 
         public FormationBuilder()
         {
-            _players = Enumerable.Range(-2, 5)
-                                 .Select(x => x * 2) // offset along line
-                                 .Select(x => Pt.At(x, 0))
-                                 .ToList();
+            _line = Enumerable.Range(-2, 5)
+                              .Select(x => x * 2) // offset along line
+                              .Select(x => Pt.At(x, 0))
+                              .ToList();
         }
 
         public ReceiverBuilder WithReceiver()
@@ -71,7 +72,7 @@ namespace MaddenGraph.Domain.Builders
 
         private bool PlayerIsAlreadyOn(Pt pos)
         {
-            return _players.FindAll(p => p == pos).Count != 0;
+            return _players.Exists(p => p == pos);
         }
 
         public FormationBuilder WithQb(QbPos position)
