@@ -82,7 +82,17 @@ namespace MaddenGraph.Tests.Unit.Domain
                 .WithReceiver().At(-10).Off();
 
             ctor.ShouldThrow<FormationBuilderException>()
-                .WithMessage($"Specified player at (-10,-1) intersects another player");
+                .WithMessage("Specified player at (-10,-1) intersects another player");
+        }
+
+        [Test]
+        public void formation_builder_objects_when_receiver_placed_within_tackle_box()
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithReceiver().At(-4).Off();
+
+            ctor.ShouldThrow<FormationBuilderException>()
+                .WithMessage("Receiver at (-4,-1) is within tackle box (define as a back)");
         }
 
         // TODO:

@@ -61,6 +61,9 @@ namespace MaddenGraph.Domain.Builders
             if(PlayerIsAlreadyOn(pos))
                 throw new FormationBuilderException($"Specified player at {pos} intersects another player");
 
+            if(Math.Abs(pos.X) < 6) // FIXME: Hardcoded tackle box (what about tackle-over formations?)
+                throw new FormationBuilderException($"Receiver at {pos} is within tackle box (define as a back)");
+
             if (pos.X < 0) {
                 clone._weak.AddIfLegal(pos);
             } else {
