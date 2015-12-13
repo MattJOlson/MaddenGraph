@@ -12,7 +12,7 @@ namespace MaddenGraph.Tests.Unit.Domain
                 .WithReceiver().At(6).On()
                 .WithReceiver().At(12).Off()
                 .WithQuarterback().UnderCenter()
-                .WithBack().At(-7, 0)
+                .WithBack().At(0, -7)
                 .BuildFormation();
         }
 

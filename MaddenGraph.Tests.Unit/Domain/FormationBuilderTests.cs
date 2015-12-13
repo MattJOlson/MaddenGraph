@@ -95,10 +95,34 @@ namespace MaddenGraph.Tests.Unit.Domain
                 .WithMessage("Receiver at (-4,-1) is within tackle box (define as a back)");
         }
 
+        [Test]
+        public void formation_builder_objects_when_backs_placed_outside_tackles()
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithBack().At(-5, -5);
+
+            ctor.ShouldThrow<FormationBuilderException>()
+                .WithMessage("Back at (-5, -5) is outside tackle box");
+        }
+
+        [TestCase(-1, false)]
+        [TestCase(0, true)]
+        [TestCase(1, true)]
+        public void formation_builder_objects_when_backs_placed_on_or_ahead_of_line(int depth, bool expectThrow)
+        {
+            Action ctor = () => new FormationBuilder()
+                .WithBack().At(0, depth);
+
+            if (expectThrow) {
+                ctor.ShouldThrow<FormationBuilderException>()
+                    .WithMessage($"Back at (0, {depth}) is on or ahead of line");
+            } else {
+                ctor.ShouldNotThrow<FormationBuilderException>();
+            }
+        }
+
         // TODO:
-        // * Receivers in tackle box ("not the same thing!")
         // * Backs sitting on each other, QB incl.
-        // * Backs out of tackle box
 
         private FormationBuilder BuilderWithReceivers(int r)
         {
