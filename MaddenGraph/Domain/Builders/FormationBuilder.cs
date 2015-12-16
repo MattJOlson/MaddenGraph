@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MaddenGraph.Util;
+using MattUtils.Demands;
 
 namespace MaddenGraph.Domain.Builders
 {
@@ -43,14 +44,18 @@ namespace MaddenGraph.Domain.Builders
 
         public Formation BuildFormation()
         {
-            if (_qbPos == QbPos.Unspecified) {
-                throw new FormationBuilderException("Formation must have a quarterback");
-            }
-            if (Players < 11) {
-                throw new FormationBuilderException($"Formation must have 11 players ({Players} specified)");
-            }
+            Demand.That(_qbPos != QbPos.Unspecified)
+                .OrThrow<FormationBuilderException>("Formation must have a quarterback");
+
+            Demand.That(Players == 11)
+                .OrThrow<FormationBuilderException>($"Formation must have 11 players ({Players} specified)");
 
             return new Formation(_weak, _strong);
+        }
+
+        private bool IsOutsideTackleBox(Pt pos)
+        {
+            return 5 <= Math.Abs(pos.X);
         }
 
         public FormationBuilder WithReceiverAt(Pt pos)
@@ -58,11 +63,11 @@ namespace MaddenGraph.Domain.Builders
             var clone = Clone();
             clone._receivers++;
 
-            if(PlayerIsAlreadyOn(pos))
-                throw new FormationBuilderException($"Specified player at {pos} intersects another player");
+            Demand.That(!PlayerIsAlreadyOn(pos))
+                .OrThrow<FormationBuilderException>($"Specified player at {pos} intersects another player");
 
-            if(Math.Abs(pos.X) < 6) // FIXME: Hardcoded tackle box (what about tackle-over formations?)
-                throw new FormationBuilderException($"Receiver at {pos} is within tackle box (define as a back)");
+            Demand.That(IsOutsideTackleBox(pos))
+                .OrThrow<FormationBuilderException>($"Receiver at {pos} is within tackle box (define as a back)");
 
             if (pos.X < 0) {
                 clone._weak.AddIfLegal(pos);

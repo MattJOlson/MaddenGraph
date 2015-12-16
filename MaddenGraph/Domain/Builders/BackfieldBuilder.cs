@@ -1,4 +1,5 @@
 using System;
+using MattUtils.Demands;
 
 namespace MaddenGraph.Domain.Builders
 {
@@ -13,13 +14,10 @@ namespace MaddenGraph.Domain.Builders
 
         public FormationBuilder At(int x, int y)
         {
-            if (4 < Math.Abs(x)) {
-                throw new FormationBuilderException($"Back at ({x}, {y}) is outside tackle box");
-            }
-
-            if (-1 < y) {
-                throw new FormationBuilderException($"Back at ({x}, {y}) is on or ahead of line");
-            }
+            Demand.That(Math.Abs(x) < 5)
+                .OrThrow<FormationBuilderException>($"Back at ({x}, {y}) is outside tackle box");
+            Demand.That(y < 0)
+                .OrThrow<FormationBuilderException>($"Back at ({x}, {y}) is on or ahead of line");
 
             return _parent.WithBackAt(x, y);
         }

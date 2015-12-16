@@ -1,5 +1,6 @@
 ﻿using System;
 using MaddenGraph.Util;
+using MattUtils.Demands;
 
 namespace MaddenGraph.Domain
 {
@@ -13,9 +14,8 @@ namespace MaddenGraph.Domain
 
         public static Position Eligible(Pt pos, int tag) // TODO: Is tag really an int?
         {
-            if (tag < 0 || 4 < tag) {
-                throw new ArgumentException($"Eligible receiver must have a tag between 0 and 4, found {tag}");
-            }
+            Demand.That(0 <= tag && tag <= 4)
+                .OrThrow<ArgumentException>($"Eligible receiver must have a tag between 0 and 4, found {tag}");
             return new Position(pos, tag); 
         }
 
